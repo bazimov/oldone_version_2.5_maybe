@@ -322,16 +322,12 @@ public class Utils {
     ///send email
     private void sendEmail(Context mContext, String[] recipients, String subject){
         Intent intent = new Intent(Intent.ACTION_SEND);
-        if(intent == null){
-            this.showToast(mContext, "Not Available to send mail.");
-        }else{
-//            String[] recipients = {"fafuserservices@gmail.com"};
-            intent.putExtra(Intent.EXTRA_EMAIL, recipients);
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-            intent.putExtra(Intent.EXTRA_CC, getDeviceName());
-            intent.setType("message/rfc822");
-            mContext.startActivity(Intent.createChooser(intent, "Send mail"));
-        }
+        //            String[] recipients = {"fafuserservices@gmail.com"};
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_CC, getDeviceName());
+        intent.setType("message/rfc822");
+        mContext.startActivity(Intent.createChooser(intent, "Send mail"));
 
     }
 

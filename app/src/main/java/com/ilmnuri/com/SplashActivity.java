@@ -82,8 +82,7 @@ public class SplashActivity extends AppCompatActivity {
 
                         arrAlbums.add(albumModel);
                     }
-//                    QuickSort quickSort = new QuickSort(arrAlbums);
-//                    quickSort.sort();
+
                     Global.getInstance().setArrayList(arrAlbums);
 
                     final Handler handler = new Handler();
@@ -118,7 +117,6 @@ public class SplashActivity extends AppCompatActivity {
                 } else if( error instanceof ServerError) {
                 } else if( error instanceof AuthFailureError) {
                 } else if( error instanceof ParseError) {
-                } else if( error instanceof NoConnectionError) {
                 } else if( error instanceof TimeoutError) {
                 }
 

@@ -3,9 +3,7 @@ package com.ilmnuri.com.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 3/5/2016.
- */
+
 public class AlbumModel implements Serializable{
     String album, category;
     int id;

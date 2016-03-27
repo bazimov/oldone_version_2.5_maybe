@@ -11,8 +11,6 @@ import android.widget.TextView;
 import com.ilmnuri.com.adapter.AlbumAdapter;
 import com.ilmnuri.com.model.AlbumModel;
 
-import java.util.ArrayList;
-
 
 public class AlbumActivity extends AppCompatActivity {
 
@@ -20,6 +18,7 @@ public class AlbumActivity extends AppCompatActivity {
 
     private ListView listView;
     private AlbumModel albumModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +32,11 @@ public class AlbumActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        TextView tvTitle = (TextView)toolbar.findViewById(R.id.tv_album_title);
-        tvTitle.setText(albumModel.getCategory() + "/" + albumModel.getAlbum());
-//        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-//        collapsingToolbar.setTitle("Album Name");
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        TextView tvTitle = (TextView)findViewById(R.id.tv_album_title);
+        tvTitle.setText(albumModel.getCategory() + "/" + albumModel.getAlbum().replace("_", " "));
 
         listView = (ListView)findViewById(R.id.lv_album);
         albumAdapter = new AlbumAdapter(AlbumActivity.this, albumModel);
@@ -49,16 +48,7 @@ public class AlbumActivity extends AppCompatActivity {
             }
         });
     }
-    ///for test
-    private ArrayList<String> generateTestData() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0; i < 30; i ++ ) {
 
-
-            arrayList.add("Track " + String.valueOf(i));
-        }
-        return arrayList;
-    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.

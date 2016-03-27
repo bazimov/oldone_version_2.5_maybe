@@ -147,7 +147,9 @@ public class PlayActivity extends AppCompatActivity  {
     private void initUI() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         tvTitle = (TextView)toolbar.findViewById(R.id.tv_play_title);
         tvTitle.setText(trackPath.replace(".mp3", "").replace("_", " "));
 
@@ -185,9 +187,9 @@ public class PlayActivity extends AppCompatActivity  {
         switch (id) {
             case DIALOG_DOWNLOAD_PROGRESS:
                 mProgressDialog = new ProgressDialog(this);
-                mProgressDialog.setMessage("Downloading file..");
+                mProgressDialog.setMessage("Darslik yuklanmoqda...");
                 mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setCancelable(false);
+                mProgressDialog.setCancelable(true);
                 mProgressDialog.show();
                 return mProgressDialog;
             default:

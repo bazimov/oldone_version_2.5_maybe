@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import com.ilmnuri.com.PlayActivity;
 import com.ilmnuri.com.R;
@@ -17,9 +19,7 @@ import com.ilmnuri.com.Utility.Utils;
 import com.ilmnuri.com.model.AlbumModel;
 import com.ilmnuri.com.model.Api;
 
-/**
- * Created by Administrator on 3/5/2016.
- */
+
 public class AlbumAdapter extends BaseAdapter {
     private AlbumModel albumModel;
     private Context context;
@@ -51,9 +51,9 @@ public class AlbumAdapter extends BaseAdapter {
         if (convertView == null) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, null);
         }
-        RelativeLayout relativeLayout = (RelativeLayout)v.findViewById(R.id.rl_item_album);
-        TextView textView = (TextView)v.findViewById(R.id.tv_item_album);
-        ImageView imageView = (ImageView)v.findViewById(R.id.iv_item_album);
+        RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.rl_item_album);
+        TextView textView = (TextView) v.findViewById(R.id.tv_item_album);
+        ImageView imageView = (ImageView) v.findViewById(R.id.iv_item_album);
         ImageButton btnDelete = (ImageButton)v.findViewById(R.id.btn_delete);
 
         textView.setText(albumModel.getArrTrack().get(position).replace(".mp3", "").replace("_", " "));
@@ -71,15 +71,38 @@ public class AlbumAdapter extends BaseAdapter {
                 context.startActivity(intent);
             }
         });
+
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.deleteFile(Api.localPath + "/" + albumModel.getArrTrack().get(position));
-                notifyDataSetChanged();
+                alertMessage(position);
             }
         });
         return v;
     }
 
+        public void alertMessage(final int position) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            // Yes button clicked
+                            Utils.deleteFile(Api.localPath + "/" + albumModel.getArrTrack().get(position));
+                            notifyDataSetChanged();
 
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            // No button clicked
+                            // do nothing
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Bu darsni o'chirib tashlashni xohlaysizmi?")
+                    .setPositiveButton("Ha", dialogClickListener)
+                    .setNegativeButton("Yo'q", dialogClickListener).show();
+        }
 }

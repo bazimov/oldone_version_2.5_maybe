@@ -2,9 +2,7 @@ package com.ilmnuri.com.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Administrator on 3/7/2016.
- */
+
 public class Global {
 
     private static Global instance;
