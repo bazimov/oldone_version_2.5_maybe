@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import com.android.volley.ApplicationController;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -72,7 +71,6 @@ public class SplashActivity extends AppCompatActivity {
 
                         albumModel.setCategory(albumObject.getString("category"));
                         albumModel.setAlbum(albumObject.getString("album"));
-//                        albumModel.setId(Integer.parseInt(albumObject.getString("id")));
                         ArrayList<String> arrayList = new ArrayList<>();
                         JSONArray jsonArray = albumObject.getJSONArray("items");
                         for(int k = 0; k < jsonArray.length(); k ++ ) {
@@ -89,35 +87,40 @@ public class SplashActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-
-                            // Do something after 2s = 2000ms
-
                             startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                            ApplicationController.getInstance().getRequestQueue().getCache().invalidate(Api.all_category, true);
                             mVolleyQueue.getCache().invalidate(Api.all_category, true);
                             finish();
                         }
                     }, 2000);
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
+                            "Qandaydir hato bo'ldi, iltimos appni butunlay yopib qayta oching!");
                 }
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Handle your error types accordingly.For Timeout & No connection error, you can show 'retry' button.
-                // For AuthFailure, you can re login with user credentials.
-                // For ClientError, 400 & 401, Errors happening on client side when sending api request.
-                // In this case you can check how client is forming the api and debug accordingly.
-                // For ServerError 5xx, you can do retry or handle accordingly.
-                Utils.showToast(SplashActivity.this, error.toString());
+                Utils.showToast(SplashActivity.this, "Internet yo'qqa o'hshaydi! Hozircha internetsiz app ishlamaydi, " +
+                        "uzur. Agar internet bor bo'lsa appni yopib qayta ochib ko'ring.");
                 if( error instanceof NetworkError) {
+                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
+                            "Yoki internet yo'q, yoki hotiraga ruhsat berilmagan. Appni " +
+                            "o'chirib qayta yo'qib ko'ring.");
                 } else if( error instanceof ServerError) {
+                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
+                            "o'chirib qayta yo'qib ko'ring. Yoki bizga habar qiling ilmnuri@ilmnuri.com");
                 } else if( error instanceof AuthFailureError) {
+                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
+                            "Appni o'chirib qayta yo'qib ko'ring.");
                 } else if( error instanceof ParseError) {
+                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
+                            "Appni o'chirib qayta yo'qib ko'ring.");
                 } else if( error instanceof TimeoutError) {
+                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
+                            "Yoki internet yo'q, yoki hotiraga ruhsat berilmagan. Appni " +
+                            "o'chirib qayta yo'qib ko'ring.");
                 }
 
             }

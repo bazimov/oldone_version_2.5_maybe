@@ -69,8 +69,6 @@ public class PlayActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
-
-
         initVariables();
         chechReadStoragePermission();
         initUI();
@@ -108,6 +106,7 @@ public class PlayActivity extends AppCompatActivity  {
         }
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -115,7 +114,7 @@ public class PlayActivity extends AppCompatActivity  {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     readExternalStoragePermission = true;
                 } else {
-                    Utils.showOKDialog(this, "You have no permission");
+                    Utils.showToast(this, "You have no permission");
                 }
         }
     }
@@ -155,8 +154,6 @@ public class PlayActivity extends AppCompatActivity  {
 
         imageView = (ImageView)findViewById(R.id.iv_play);
 
-
-
         loadImage();
 
     }
@@ -189,7 +186,7 @@ public class PlayActivity extends AppCompatActivity  {
                 mProgressDialog = new ProgressDialog(this);
                 mProgressDialog.setMessage("Darslik yuklanmoqda...");
                 mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setCancelable(true);
+                mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
                 return mProgressDialog;
             default:
@@ -233,7 +230,9 @@ public class PlayActivity extends AppCompatActivity  {
                 output.flush();
                 output.close();
                 input.close();
-            } catch (Exception e) {}
+
+            } catch (Exception e) {
+            }
             return null;
 
         }
@@ -256,7 +255,7 @@ public class PlayActivity extends AppCompatActivity  {
     private MediaPlayer mediaPlayer;
     public TextView  duration;
     private double timeElapsed = 0, finalTime = 0;
-    private int forwardTime = 2000, backwardTime = 2000;
+    private int forwardTime = 7000, backwardTime = 7000;
     private Handler durationHandler = new Handler();
     private SeekBar seekbar;
     private ImageButton btnStart;
@@ -344,7 +343,7 @@ public class PlayActivity extends AppCompatActivity  {
         if (mediaPlayer != null) {
             //check if we can go forward at forwardTime seconds before song endes
             if ((timeElapsed + forwardTime) <= finalTime) {
-                timeElapsed = timeElapsed + forwardTime;
+                timeElapsed += forwardTime;
 
                 //seek to the exact second of the track
                 mediaPlayer.seekTo((int) timeElapsed);

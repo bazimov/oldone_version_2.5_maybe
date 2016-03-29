@@ -35,8 +35,8 @@ public class AlbumActivity extends AppCompatActivity {
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        TextView tvTitle = (TextView)findViewById(R.id.tv_album_title);
-        tvTitle.setText(albumModel.getCategory() + "/" + albumModel.getAlbum().replace("_", " "));
+        TextView tvTitle = (TextView)toolbar.findViewById(R.id.tv_album_title);
+        tvTitle.setText(albumModel.getCategory() + "/" + albumModel.getAlbum());
 
         listView = (ListView)findViewById(R.id.lv_album);
         albumAdapter = new AlbumAdapter(AlbumActivity.this, albumModel);

@@ -12,9 +12,7 @@ import com.ilmnuri.com.model.AlbumModel;
 
 import java.util.ArrayList;
 
-/**
- * Created by echessa on 7/24/15.
- */
+
 public class DesignDemoRecyclerAdapter extends RecyclerView.Adapter<DesignDemoRecyclerAdapter.ViewHolder> {
 
     private ArrayList<AlbumModel> mItems;
@@ -41,7 +39,7 @@ public class DesignDemoRecyclerAdapter extends RecyclerView.Adapter<DesignDemoRe
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.bind(mItems.get(i), listener);
         final AlbumModel item = mItems.get(i);
-        viewHolder.mTextView.setText(item.getAlbum());
+        viewHolder.mTextView.setText(item.getAlbum().replace("_", " "));
 
         viewHolder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override

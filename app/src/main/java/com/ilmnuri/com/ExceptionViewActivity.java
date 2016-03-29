@@ -11,7 +11,9 @@ public class ExceptionViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exception_view);
         TextView textView = (TextView)findViewById(R.id.tv_exception_view);
-        String exception = getIntent().getStringExtra("error");
+        String exception =  "Uh, ah bunisini kutmagandik! Nosozlik, appni qayta o'chirib yondiring iltimos. Unda ham " +
+                "bo'lmasa bizga habar qiling ilmnuri@ilmnuri.com. " +
+                "Nosozliklar uchun oldindan uzur so'raymiz. Team ilmnuri"; // getIntent().getStringExtra("error");
         textView.setText(exception);
     }
 

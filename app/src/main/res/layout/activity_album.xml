@@ -55,8 +55,7 @@
         <ListView
             android:id="@+id/lv_album"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            >
+            android:layout_height="fill_parent">
 
         </ListView>
 

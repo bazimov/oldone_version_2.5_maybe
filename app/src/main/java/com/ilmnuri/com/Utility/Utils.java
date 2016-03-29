@@ -38,9 +38,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by hic on 2015-11-20.
- */
+
 public class Utils {
 
     private static ProgressDialog mProgressDialog;
