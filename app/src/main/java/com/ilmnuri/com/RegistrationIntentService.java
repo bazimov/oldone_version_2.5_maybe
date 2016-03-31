@@ -6,12 +6,20 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.apache.commons.io.IOUtils;
+import java.io.InputStream;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
-import java.io.IOException;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -39,7 +47,6 @@ public class RegistrationIntentService extends IntentService {
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
 
-            // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
 
             // Subscribe to topic channels
@@ -69,8 +76,42 @@ public class RegistrationIntentService extends IntentService {
      *
      * @param token The new token.
      */
+
     private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+
+        JSONObject jGcmData = new JSONObject();
+
+        try {
+            // get the token and make json as key data
+            jGcmData.put("data", token);
+        } catch (JSONException error) {
+            Log.e(TAG, "Error", error);
+        }
+        try {
+            // Create connection to send GCM Message request.
+            URL url = new URL("http://api.azimov.xyz/tokens/success");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            // Send GCM message content.
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(jGcmData.toString().getBytes());
+
+            // Read GCM response.
+            InputStream inputStream = conn.getInputStream();
+            String resp = IOUtils.toString(inputStream);
+            System.out.println(resp);
+            System.out.println("Check your device/emulator for notification or logcat for " +
+                    "confirmation of the receipt of the GCM message.");
+        } catch (IOException e) {
+            System.out.println("Unable to send GCM message.");
+            System.out.println("Please ensure that API_KEY has been replaced by the server " +
+                    "API key, and that the device's registration token is correct (if specified).");
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -86,6 +127,4 @@ public class RegistrationIntentService extends IntentService {
             pubSub.subscribe(token, "/topics/" + topic, null);
         }
     }
-    // [END subscribe_topics]
-
 }
