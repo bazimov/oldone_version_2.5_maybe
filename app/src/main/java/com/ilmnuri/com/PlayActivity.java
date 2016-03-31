@@ -1,7 +1,6 @@
 package com.ilmnuri.com;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -45,9 +44,6 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayActivity extends AppCompatActivity  {
 
-//    private  String audioPath = Environment.getExternalStorageDirectory().toString() + "/sample.mp3";
-
-
     public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private ProgressDialog mProgressDialog;
 
@@ -80,14 +76,12 @@ public class PlayActivity extends AppCompatActivity  {
         }
 
         if (Utils.checkFileExist(Api.localPath + "/" + fileName)) {
-//            playAudio();
             if (readExternalStoragePermission) {
                 initMediaPlayer();
             }
 
         } else {
             new DownloadFileAsync().execute(url);
-//            downloadAudioFile();
         }
     }
 
@@ -95,7 +89,7 @@ public class PlayActivity extends AppCompatActivity  {
         int permissinCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissinCheck !=  android.content.pm.PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//                readExternalStoragePermission = true;
+                // readExternalStoragePermission = true;
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         200);
@@ -125,8 +119,6 @@ public class PlayActivity extends AppCompatActivity  {
         mImageLoader = new SimpleImageLoader(mRequestQueue, BitmapImageCache.getInstance(null));
 
         readExternalStoragePermission = false;
-//        manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
-//        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
         trackPath = getIntent().getStringExtra("url");
         url = Api.BaseUrl + trackPath;
@@ -184,7 +176,7 @@ public class PlayActivity extends AppCompatActivity  {
         switch (id) {
             case DIALOG_DOWNLOAD_PROGRESS:
                 mProgressDialog = new ProgressDialog(this);
-                mProgressDialog.setMessage("Darslik yuklanmoqda...");
+                mProgressDialog.setMessage(getString(R.string.Loading));
                 mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 mProgressDialog.setCancelable(false);
                 mProgressDialog.show();
@@ -244,14 +236,13 @@ public class PlayActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(String unused) {
             dismissDialog(DIALOG_DOWNLOAD_PROGRESS);
-//            playAudio();
             if (readExternalStoragePermission) {
                 initMediaPlayer();
             }
         }
     }
 
-////play music===============start
+    //play music===============start
     private MediaPlayer mediaPlayer;
     public TextView  duration;
     private double timeElapsed = 0, finalTime = 0;
@@ -262,7 +253,6 @@ public class PlayActivity extends AppCompatActivity  {
 
     public void initMediaPlayer(){
         mediaPlayer = MediaPlayer.create(this, Uri.parse(Api.localPath + "/" + fileName));
-//        mediaPlayer = MediaPlayer.create(this, R.raw.sample_song);
         finalTime = mediaPlayer.getDuration();
         duration = (TextView) findViewById(R.id.songDuration);
         seekbar = (SeekBar) findViewById(R.id.seekBar);

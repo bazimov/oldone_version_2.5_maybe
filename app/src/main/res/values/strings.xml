@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">ilmnuri</string>
 
-    <string name="Loading">Downloading...</string>
+    <string name="Loading">Darslik yuklanmoqda…</string>
+    <string name="registering_message">Xabarlar yuklanmoqda</string>
+    <string name="gcm_send_message">Darak yuborildi</string>
+    <string name="token_error_message">Error</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">App haqida</string>
     <string name="nav_item_attachment">Attachment</string>
@@ -13,7 +16,7 @@
     <string name="drawer_header_text">Ilm Nuri</string>
     <string name="second_activity_text">www.ilmnuri.com</string>
     <string name="title_activity_second">Album Name</string>
-    <string name="title_activity_play"></string>
+    <string name="title_activity_play"/>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_about_us">AboutUsActivity</string>
     <string name="title_activity_exception_view">ExceptionViewActivity</string>

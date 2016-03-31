@@ -38,6 +38,17 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
+
+        <TextView android:text="@string/registering_message" android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/informationTextView"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/registrationProgressBar" />
+
         <!--<android.support.design.widget.FloatingActionButton-->
             <!--android:id="@+id/fab"-->
             <!--android:layout_width="wrap_content"-->
