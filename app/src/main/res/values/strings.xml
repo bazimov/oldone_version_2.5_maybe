@@ -3,7 +3,7 @@
 
     <string name="Loading">Darslik yuklanmoqda…</string>
     <string name="registering_message">Xabarlar yuklanmoqda</string>
-    <string name="gcm_send_message">Darak yuborildi</string>
+    <string name="gcm_send_message">true</string>
     <string name="token_error_message">Error</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">App haqida</string>

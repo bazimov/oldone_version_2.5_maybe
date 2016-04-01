@@ -2,11 +2,9 @@ package com.ilmnuri.com.model;
 
 import android.os.Environment;
 
-/**
- * Created by Administrator on 3/7/2016.
- */
+
 public class Api {
-    public static String BaseUrl = "http://dfh59cyusxnu7.cloudfront.net/";
+    public static String BaseUrl = "http://media.azimov.xyz/";
 
     public static String all_category = "http://api.azimov.xyz/api/v1.0/albums/";
     public static String catetory1 = "http://api.azimov.xyz/api/v1.0/albums/Abdulloh/";
