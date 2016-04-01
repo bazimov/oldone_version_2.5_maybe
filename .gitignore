@@ -40,4 +40,5 @@ gcmsender/
 # Keystore files
 *.jks
 Status API Training Shop Blog About
-
+# ds store
+*.DS_Store
