@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -25,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.content.Intent;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.cache.BitmapImageCache;
@@ -80,8 +83,19 @@ public class PlayActivity extends AppCompatActivity  {
             }
 
         } else {
-            new DownloadFileAsync().execute(url);
+            if (isNetworkAvailable()) {
+                new DownloadFileAsync().execute(url);
+            } else {
+                Utils.showToast(PlayActivity.this, "INTERNET YO'Q! Yuklay olmaysiz!");
+            }
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void chechReadStoragePermission() {

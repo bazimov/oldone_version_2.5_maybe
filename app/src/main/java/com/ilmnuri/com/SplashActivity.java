@@ -22,6 +22,9 @@ import com.ilmnuri.com.Utility.Utils;
 import com.ilmnuri.com.model.AlbumModel;
 import com.ilmnuri.com.model.Api;
 import com.ilmnuri.com.model.Global;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,14 +45,24 @@ public class SplashActivity extends AppCompatActivity {
 
         getList();
 
+        if (isNetworkAvailable()) {
+            mVolleyQueue.getCache().invalidate(Api.all_category, true);
+        }
 
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private void getList() {
 
 
         // Initialise Volley Request Queue.
         mVolleyQueue = Volley.newRequestQueue(this);
-        ArrayList<AlbumModel> albumModels = new ArrayList<>();
 
         JsonObjectRequest jsonObjRequest = new JsonObjectRequest(Request.Method.GET, Api.all_category, null, new Response.Listener<JSONObject>() {
             @Override
@@ -84,38 +97,37 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                            mVolleyQueue.getCache().invalidate(Api.all_category, true);
                             finish();
                         }
                     }, 2000);
 
                 } catch (Exception e) {
                     Utils.showToast(SplashActivity.this, "Qandaydir hato bo'ldi, iltimos appni butunlay yopib qayta oching!");
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 }
             }
         }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utils.showToast(SplashActivity.this, "Internet yo'qqa o'hshaydi! Hozircha internetsiz app ishlamaydi, " +
-                        "uzur.");
+                Utils.showToast(SplashActivity.this, "Xato! Appni qayta o'chirib yondiring.");
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 if( error instanceof NetworkError) {
-                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
-                            "Yoki internet yo'q, yoki hotiraga ruhsat berilmagan. Appni " +
-                            "o'chirib qayta yo'qib ko'ring.");
+                    Utils.showToast(SplashActivity.this, "Tarmoqda biron bir xatolik bo'ldi!");
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else if( error instanceof ServerError) {
-                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
-                            "o'chirib qayta yo'qib ko'ring. Yoki bizga habar qiling ilmnuri@ilmnuri.com");
+                    Utils.showToast(SplashActivity.this, "Ilmnuri serverlarida xato bo'ldi. Yoki bizga habar qiling ilmnuri@ilmnuri.com");
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else if( error instanceof AuthFailureError) {
                     Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
                             "Appni o'chirib qayta yo'qib ko'ring.");
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else if( error instanceof ParseError) {
-                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
-                            "Appni o'chirib qayta yo'qib ko'ring.");
+                    Utils.showToast(SplashActivity.this, "ilmnuri API larida xatolik bor.");
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else if( error instanceof TimeoutError) {
-                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
-                            "Yoki internet yo'q, yoki hotiraga ruhsat berilmagan. Appni " +
-                            "o'chirib qayta yo'qib ko'ring.");
+                    Utils.showToast(SplashActivity.this, "Tarmoq uzoq kutishlik natijasida uzulib qoldi.");
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 }
 
             }
