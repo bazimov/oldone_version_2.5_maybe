@@ -1,6 +1,5 @@
 package com.ilmnuri.com;
 
-import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,7 +11,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.error.AuthFailureError;
 import com.android.volley.error.NetworkError;
-import com.android.volley.error.NoConnectionError;
 import com.android.volley.error.ParseError;
 import com.android.volley.error.ServerError;
 import com.android.volley.error.TimeoutError;
@@ -32,9 +30,7 @@ import java.util.ArrayList;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final String TAG_REQUEST = "MY_TAG";
     private RequestQueue mVolleyQueue;
-    private ArrayList<AlbumModel> albumModels;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Initialise Volley Request Queue.
         mVolleyQueue = Volley.newRequestQueue(this);
-        albumModels = new ArrayList<>();
+        ArrayList<AlbumModel> albumModels = new ArrayList<>();
 
         JsonObjectRequest jsonObjRequest = new JsonObjectRequest(Request.Method.GET, Api.all_category, null, new Response.Listener<JSONObject>() {
             @Override
@@ -94,8 +90,7 @@ public class SplashActivity extends AppCompatActivity {
                     }, 2000);
 
                 } catch (Exception e) {
-                    Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
-                            "Qandaydir hato bo'ldi, iltimos appni butunlay yopib qayta oching!");
+                    Utils.showToast(SplashActivity.this, "Qandaydir hato bo'ldi, iltimos appni butunlay yopib qayta oching!");
                 }
             }
         }, new Response.ErrorListener() {
@@ -103,7 +98,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Utils.showToast(SplashActivity.this, "Internet yo'qqa o'hshaydi! Hozircha internetsiz app ishlamaydi, " +
-                        "uzur. Agar internet bor bo'lsa appni yopib qayta ochib ko'ring.");
+                        "uzur.");
                 if( error instanceof NetworkError) {
                     Utils.showToast(SplashActivity.this, "Ana bo'lmasam, bunaqasini kutmagandik. " +
                             "Yoki internet yo'q, yoki hotiraga ruhsat berilmagan. Appni " +
@@ -128,6 +123,7 @@ public class SplashActivity extends AppCompatActivity {
 
         //Set a retry policy in case of SocketTimeout & ConnectionTimeout Exceptions. Volley does retry for you if you have specified the policy.
         jsonObjRequest.setRetryPolicy(new DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        String TAG_REQUEST = "MY_TAG";
         jsonObjRequest.setTag(TAG_REQUEST);
         mVolleyQueue.add(jsonObjRequest);
     }

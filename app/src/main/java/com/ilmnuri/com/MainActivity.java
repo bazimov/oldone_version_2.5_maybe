@@ -2,6 +2,7 @@ package com.ilmnuri.com;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -31,13 +32,10 @@ import android.support.v4.content.ContextCompat;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private DesignDemoPagerAdapter adapter;
-    private ViewPager viewPager;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
 
@@ -132,15 +129,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         adapter = new DesignDemoPagerAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 123: {
                 // If request is cancelled, the result arrays are empty.
@@ -148,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
+                    Utils.showToast(MainActivity.this, "Diskga yozishga izn berildi!");
 
                 } else {
 
@@ -157,8 +154,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 }
-
-                return;
             }
         }
     }

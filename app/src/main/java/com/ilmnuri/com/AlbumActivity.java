@@ -14,9 +14,6 @@ import com.ilmnuri.com.model.AlbumModel;
 
 public class AlbumActivity extends AppCompatActivity {
 
-    private AlbumAdapter albumAdapter;
-
-    private ListView listView;
     private AlbumModel albumModel;
 
     @Override
@@ -38,8 +35,8 @@ public class AlbumActivity extends AppCompatActivity {
         TextView tvTitle = (TextView)toolbar.findViewById(R.id.tv_album_title);
         tvTitle.setText(albumModel.getCategory() + "/" + albumModel.getAlbum());
 
-        listView = (ListView)findViewById(R.id.lv_album);
-        albumAdapter = new AlbumAdapter(AlbumActivity.this, albumModel);
+        ListView listView = (ListView) findViewById(R.id.lv_album);
+        AlbumAdapter albumAdapter = new AlbumAdapter(AlbumActivity.this, albumModel);
         listView.setAdapter(albumAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -49,25 +46,4 @@ public class AlbumActivity extends AppCompatActivity {
         });
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-////        getMenuInflater().inflate(R.menu.menu_second, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }

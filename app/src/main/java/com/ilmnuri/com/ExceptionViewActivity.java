@@ -3,7 +3,6 @@ package com.ilmnuri.com;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.app.AlertDialog;
 
 public class ExceptionViewActivity extends AppCompatActivity {
 

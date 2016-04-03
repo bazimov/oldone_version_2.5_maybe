@@ -19,8 +19,6 @@ import com.ilmnuri.com.model.Api;
 
 public class AboutUsActivity extends AppCompatActivity {
 
-    private final String TAG_REQUEST = "About_us";
-    private RequestQueue mVolleyQueue;
     private TextView tvAboutUs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,7 @@ public class AboutUsActivity extends AppCompatActivity {
     private void getList() {
 
         // Initialise Volley Request Queue.
-        mVolleyQueue = Volley.newRequestQueue(this);
+        RequestQueue mVolleyQueue = Volley.newRequestQueue(this);
 
         StringRequest stringRequest = new StringRequest(Api.about_us, new Response.Listener<String>() {
 
@@ -62,6 +60,7 @@ public class AboutUsActivity extends AppCompatActivity {
 
         //Set a retry policy in case of SocketTimeout & ConnectionTimeout Exceptions. Volley does retry for you if you have specified the policy.
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        String TAG_REQUEST = "About_us";
         stringRequest.setTag(TAG_REQUEST);
         mVolleyQueue.add(stringRequest);
     }

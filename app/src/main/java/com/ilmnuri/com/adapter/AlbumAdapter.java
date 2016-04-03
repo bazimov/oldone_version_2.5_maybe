@@ -81,7 +81,7 @@ public class AlbumAdapter extends BaseAdapter {
         return v;
     }
 
-        public void alertMessage(final int position) {
+        private void alertMessage(final int position) {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     switch (which) {

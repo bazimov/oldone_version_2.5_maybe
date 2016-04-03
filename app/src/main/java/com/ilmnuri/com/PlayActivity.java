@@ -8,8 +8,10 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -47,13 +49,10 @@ public class PlayActivity extends AppCompatActivity  {
     public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
     private ProgressDialog mProgressDialog;
 
-    private  RequestQueue mRequestQueue;
     private  SimpleImageLoader mImageLoader;
-    private Context mContext;
 
     private ImageView imageView ;
 
-    private TextView tvTitle;
     private int currentCategory;
     private String url, trackPath;
     private String fileName;
@@ -86,13 +85,22 @@ public class PlayActivity extends AppCompatActivity  {
     }
 
     private void chechReadStoragePermission() {
-        int permissinCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (permissinCheck !=  android.content.pm.PackageManager.PERMISSION_GRANTED) {
+        int permissinCheck = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            permissinCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (permissinCheck !=  PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // readExternalStoragePermission = true;
+                try {
+                    readExternalStoragePermission = true;
+                } catch (Exception e) {
+                    Utils.showToast(PlayActivity.this, "Diskdan joy berilmaganga o'hshaydi!");
+                }
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        200);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            200);
+                }
             }
 
         } else {
@@ -102,20 +110,20 @@ public class PlayActivity extends AppCompatActivity  {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 200:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     readExternalStoragePermission = true;
                 } else {
-                    Utils.showToast(this, "You have no permission");
+                    Utils.showToast(this, "Diskga yozishga ruxsat bermabsiz!");
                 }
         }
     }
 
     private void initVariables() {
-        mContext = this;
-        mRequestQueue = Volley.newRequestQueue(mContext);
+        Context mContext = this;
+        RequestQueue mRequestQueue = Volley.newRequestQueue(mContext);
         mImageLoader = new SimpleImageLoader(mRequestQueue, BitmapImageCache.getInstance(null));
 
         readExternalStoragePermission = false;
@@ -141,7 +149,7 @@ public class PlayActivity extends AppCompatActivity  {
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        tvTitle = (TextView)toolbar.findViewById(R.id.tv_play_title);
+        TextView tvTitle = (TextView) toolbar.findViewById(R.id.tv_play_title);
         tvTitle.setText(trackPath.replace(".mp3", "").replace("_", " "));
 
         imageView = (ImageView)findViewById(R.id.iv_play);
@@ -170,6 +178,7 @@ public class PlayActivity extends AppCompatActivity  {
                         R.drawable.splash_small,
                         R.drawable.splash_small));
     }
+
 
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -224,6 +233,7 @@ public class PlayActivity extends AppCompatActivity  {
                 input.close();
 
             } catch (Exception e) {
+                Utils.showToast(PlayActivity.this, "Error on download?");
             }
             return null;
 
@@ -246,10 +256,8 @@ public class PlayActivity extends AppCompatActivity  {
     private MediaPlayer mediaPlayer;
     public TextView  duration;
     private double timeElapsed = 0, finalTime = 0;
-    private int forwardTime = 7000, backwardTime = 7000;
     private Handler durationHandler = new Handler();
     private SeekBar seekbar;
-    private ImageButton btnStart;
 
     public void initMediaPlayer(){
         mediaPlayer = MediaPlayer.create(this, Uri.parse(Api.localPath + "/" + fileName));
@@ -279,7 +287,7 @@ public class PlayActivity extends AppCompatActivity  {
             }
         });
 
-        btnStart = (ImageButton)findViewById(R.id.media_play);
+        ImageButton btnStart = (ImageButton) findViewById(R.id.media_play);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -332,6 +340,7 @@ public class PlayActivity extends AppCompatActivity  {
     public void forward(View view) {
         if (mediaPlayer != null) {
             //check if we can go forward at forwardTime seconds before song endes
+            int forwardTime = 7000;
             if ((timeElapsed + forwardTime) <= finalTime) {
                 timeElapsed += forwardTime;
 
@@ -346,6 +355,7 @@ public class PlayActivity extends AppCompatActivity  {
     public void rewind(View view) {
         if (mediaPlayer != null) {
             //check if we can go back at backwardTime seconds after song starts
+            int backwardTime = 7000;
             if ((timeElapsed - backwardTime) > 0) {
                 timeElapsed = timeElapsed - backwardTime;
 
@@ -385,61 +395,3 @@ public class PlayActivity extends AppCompatActivity  {
         return true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    private void playAudio() {
-////        MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(audioPath));
-//        MediaPlayer mediaPlayer = MediaPlayer.create(this, Uri.parse(Api.localPath + "/" + fileName));
-//        if (mediaPlayer != null) {
-//            mediaPlayer.setLooping(false);
-//            mediaPlayer.start();
-//        }
-////        VideoPlay videoPlay = new VideoPlay(PlayActivity.this, videoView, Api.localPath + "/" + fileName);
-////        videoPlay.playVideo();
-//    }
-
-
-
-//    private void downloadAudioFile() {
-//
-//        dialog = Utils.showProgressDialog(mContext, "Downloading...", false);
-//        ///creat download request
-//        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-//        ////////set destinatin storage path
-////        request.setDestinationInExternalPublicDir(PATH, fileName);
-//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-//                .setAllowedOverRoaming(false)
-//                .setTitle("ILM NURI - " + fileName)
-//                .setDestinationInExternalPublicDir(Api.localPath, fileName)
-//                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-//        request.allowScanningByMediaScanner();
-//
-//
-//        final long downloadId = manager.enqueue(request);
-//
-//
-//    }
-//    BroadcastReceiver onComplete=new BroadcastReceiver() {
-//        public void onReceive(Context ctxt, Intent intent) {
-//            // your code
-//            if (dialog != null) {
-//                dialog.dismiss();
-//            }
-//            playAudio();
-//        }
-//    };

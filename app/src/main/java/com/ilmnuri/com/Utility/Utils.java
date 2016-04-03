@@ -47,10 +47,7 @@ public class Utils {
     public static boolean checkFileExist( String PATH){
 
         File file = new File(PATH );
-        if(file.exists()){
-            return true;
-        }else
-            return false;
+        return file.exists();
     }
     public static boolean deleteFile(String PATH){
 
@@ -75,8 +72,8 @@ public class Utils {
         } else {
             NetworkInfo[] info = connectivity.getAllNetworkInfo();
             if (info != null) {
-                for (int i = 0; i < info.length; i++) {
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                for (NetworkInfo anInfo : info) {
+                    if (anInfo.getState() == NetworkInfo.State.CONNECTED) {
                         return true;
                     }
                 }
@@ -98,23 +95,6 @@ public class Utils {
                         dialog.cancel();
                     }
                 });
-//        builder1.setNegativeButton("No",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.cancel();
-//                    }
-//                });
-//        builder.setNeutralButton("Close", new DialogInterface.OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface arg0, int arg1) {
-//                // TODO Auto-generated method stub
-//                Toast.makeText(getApplicationContext(), "Close is clicked", Toast.LENGTH_LONG).show();
-//
-//            }
-//        });
-//        dialog.setCancelable(true);
-//        dialog.setCanceledOnTouchOutside(false);
         AlertDialog alert = builder.create();
         alert.show();
     }
@@ -159,7 +139,9 @@ public class Utils {
                 mProgressDialog.dismiss();
             }
             catch (Exception ex)
-            {}
+            {
+                // empty
+            }
             finally
             {
                 mProgressDialog = null;
@@ -198,7 +180,7 @@ public class Utils {
         edit.putString(key, value);
 
 
-        edit.commit();
+        edit.apply();
     }
     public static String getFromPreference(Context context, String key) {
         return getSharedPreferences(context).getString(key, "");
@@ -243,8 +225,8 @@ public class Utils {
 
 
     public static JSONObject getJSONGetPractitionerRecords(String contactNo) {
-        HashMap<String, Object> outerMap = new HashMap<String, Object>();
-        HashMap<String, String> innerMap = new HashMap<String, String>();
+        HashMap<String, Object> outerMap = new HashMap<>();
+        HashMap<String, String> innerMap = new HashMap<>();
 
         innerMap.put("contactNo", contactNo);
         outerMap.put("practitionerDetails", new JSONObject(innerMap));
@@ -266,8 +248,7 @@ public class Utils {
         } finally {
             is.close();
         }
-        String text = writer.toString();
-        return text;
+        return writer.toString();
     }
 
     public static String getSimCountryIso(Context ctx) {
@@ -282,36 +263,17 @@ public class Utils {
     }
 
     public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
-        if (!TextUtils.isEmpty(phoneNumber)) {
-            return Patterns.PHONE.matcher(phoneNumber).matches();
-        }
-        return false;
+        return !TextUtils.isEmpty(phoneNumber) && Patterns.PHONE.matcher(phoneNumber).matches();
     }
 
-    //////check email
 
-    public final static boolean isValidEmail(CharSequence target) {
-        if (target == null) {
-            return false;
-        } else {
-            return Patterns.EMAIL_ADDRESS.matcher(target)
-                    .matches();
-        }
-    }
-    /**
-     * method is used for checking valid email id format.
-     *
-     * @param email
-     * @return boolean true for valid false for invalid
-     */
     public static boolean isEmailValid(String email) {
         boolean isValid = false;
 
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        CharSequence inputStr = email;
 
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
+        Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
             isValid = true;
         }
