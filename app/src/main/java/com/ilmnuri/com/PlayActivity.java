@@ -27,7 +27,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.content.Intent;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.cache.BitmapImageCache;
@@ -217,16 +216,16 @@ public class PlayActivity extends AppCompatActivity  {
         }
 
         @Override
-        protected String doInBackground(String... aurl) {
+        protected String doInBackground(String... aural) {
             int count;
 
             try {
 
-                URL url = new URL(aurl[0]);
-                URLConnection conexion = url.openConnection();
-                conexion.connect();
+                URL url = new URL(aural[0]);
+                URLConnection connexion = url.openConnection();
+                connexion.connect();
 
-                int lenghtOfFile = conexion.getContentLength();
+                int lenghtOfFile = connexion.getContentLength();
                 Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
 
                 InputStream input = new BufferedInputStream(url.openStream());

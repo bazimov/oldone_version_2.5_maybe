@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.app.AlertDialog;
@@ -49,19 +48,32 @@ public class AlbumAdapter extends BaseAdapter {
 
         View v = convertView;
         if (convertView == null) {
-            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, null);
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, parent, false);
         }
         RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.rl_item_album);
         TextView textView = (TextView) v.findViewById(R.id.tv_item_album);
-        ImageView imageView = (ImageView) v.findViewById(R.id.iv_item_album);
         ImageButton btnDelete = (ImageButton)v.findViewById(R.id.btn_delete);
+        ImageButton btnDownload = (ImageButton)v.findViewById(R.id.btn_download);
 
         textView.setText(albumModel.getArrTrack().get(position).replace(".mp3", "").replace("_", " "));
         if (Utils.checkFileExist(Api.localPath + "/" + albumModel.getArrTrack().get(position))) {
+            btnDownload.setVisibility(View.GONE);
             btnDelete.setVisibility(View.VISIBLE);
         } else {
             btnDelete.setVisibility(View.GONE);
+            btnDownload.setVisibility(View.VISIBLE);
         }
+
+        btnDownload.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                  Intent intent = new Intent(context, PlayActivity.class);
+                  intent.putExtra("category", albumModel.getCategory());
+                  intent.putExtra("url",albumModel.getCategory() + "/" + albumModel.getAlbum() + "/" + albumModel.getArrTrack().get(position));
+                  context.startActivity(intent);
+              }
+          });
+
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,4 +117,5 @@ public class AlbumAdapter extends BaseAdapter {
                     .setPositiveButton("Ha", dialogClickListener)
                     .setNegativeButton("Yo'q", dialogClickListener).show();
         }
+
 }

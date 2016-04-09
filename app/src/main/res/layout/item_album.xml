@@ -42,7 +42,18 @@
             android:layout_centerVertical="true"
             android:visibility="visible"
             android:contentDescription="@string/delete" />
-
+        <ImageButton
+            android:id="@+id/btn_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_file_download_24dp"
+            android:background="@color/transparent"
+            android:textColor="@color/red"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            android:contentDescription="@string/hello_world" />
 
     </RelativeLayout>
 

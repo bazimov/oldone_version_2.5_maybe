@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="14dp"/>
+                android:textSize="14sp"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -36,7 +36,7 @@
             android:id="@+id/iv_play"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            />
+            android:contentDescription="@string/hello_world" />
        <LinearLayout
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_gravity="center"
-               android:text="songDuration" />
+               android:text="@string/duration" />
 
            <SeekBar
                android:id="@+id/seekBar"
@@ -69,7 +69,8 @@
                    android:layout_height="wrap_content"
                    android:layout_marginLeft="14dp"
                    android:onClick="rewind"
-                   android:src="@android:drawable/ic_media_rew" />
+                   android:src="@android:drawable/ic_media_rew"
+                   android:contentDescription="@string/hello_world" />
 
                <ImageButton
                    android:id="@+id/media_pause"
@@ -77,14 +78,16 @@
                    android:layout_height="wrap_content"
                    android:layout_marginLeft="14dp"
                    android:onClick="pause"
-                   android:src="@android:drawable/ic_media_pause" />
+                   android:src="@android:drawable/ic_media_pause"
+                   android:contentDescription="@string/hello_world" />
 
                <ImageButton
                    android:id="@+id/media_play"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:layout_marginLeft="14dp"
-                   android:src="@android:drawable/ic_media_play" />
+                   android:src="@android:drawable/ic_media_play"
+                   android:contentDescription="@string/hello_world" />
 
                <ImageButton
                    android:id="@+id/media_ff"
@@ -92,7 +95,8 @@
                    android:layout_height="wrap_content"
                    android:layout_marginLeft="14dp"
                    android:onClick="forward"
-                   android:src="@android:drawable/ic_media_ff" />
+                   android:src="@android:drawable/ic_media_ff"
+                   android:contentDescription="@string/hello_world" />
            </LinearLayout>
        </LinearLayout>
     </RelativeLayout>
