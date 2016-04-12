@@ -1,6 +1,9 @@
 package com.ilmnuri.com;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -22,9 +25,6 @@ import com.ilmnuri.com.Utility.Utils;
 import com.ilmnuri.com.model.AlbumModel;
 import com.ilmnuri.com.model.Api;
 import com.ilmnuri.com.model.Global;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -102,7 +102,7 @@ public class SplashActivity extends AppCompatActivity {
                     }, 2000);
 
                 } catch (Exception e) {
-                    Utils.showToast(SplashActivity.this, "Qandaydir hato bo'ldi, iltimos appni butunlay yopib qayta oching!");
+                    Utils.showToast(SplashActivity.this, "Qandaydir hato bo'ldi, Bizningcha, internet yo'q va keshda ham darsliklar topilmadi.");
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 }
             }

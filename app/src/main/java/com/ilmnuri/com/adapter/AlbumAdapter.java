@@ -50,12 +50,13 @@ public class AlbumAdapter extends BaseAdapter {
         if (convertView == null) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, parent, false);
         }
+
         RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.rl_item_album);
         TextView textView = (TextView) v.findViewById(R.id.tv_item_album);
         ImageButton btnDelete = (ImageButton)v.findViewById(R.id.btn_delete);
         ImageButton btnDownload = (ImageButton)v.findViewById(R.id.btn_download);
-
         textView.setText(albumModel.getArrTrack().get(position).replace(".mp3", "").replace("_", " "));
+
         if (Utils.checkFileExist(Api.localPath + "/" + albumModel.getArrTrack().get(position))) {
             btnDownload.setVisibility(View.GONE);
             btnDelete.setVisibility(View.VISIBLE);
@@ -67,22 +68,29 @@ public class AlbumAdapter extends BaseAdapter {
         btnDownload.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                  Intent intent = new Intent(context, PlayActivity.class);
-                  intent.putExtra("category", albumModel.getCategory());
-                  intent.putExtra("url",albumModel.getCategory() + "/" + albumModel.getAlbum() + "/" + albumModel.getArrTrack().get(position));
-                  context.startActivity(intent);
+                  alertDownload(position);
               }
           });
 
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, PlayActivity.class);
-                intent.putExtra("category", albumModel.getCategory());
-                intent.putExtra("url",albumModel.getCategory() + "/" + albumModel.getAlbum() + "/" + albumModel.getArrTrack().get(position));
-                context.startActivity(intent);
-            }
-        });
+        if (Utils.checkFileExist(Api.localPath + "/" + albumModel.getArrTrack().get(position))) {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, PlayActivity.class);
+                    intent.putExtra("category", albumModel.getCategory());
+                    intent.putExtra("url", albumModel.getCategory() + "/" + albumModel.getAlbum() + "/" + albumModel.getArrTrack().get(position));
+                    notifyDataSetChanged();
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDownload(position);
+                }
+            });
+        }
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,29 +101,56 @@ public class AlbumAdapter extends BaseAdapter {
         return v;
     }
 
-        private void alertMessage(final int position) {
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            // Yes button clicked
-                            Utils.deleteFile(Api.localPath + "/" + albumModel.getArrTrack().get(position));
-                            notifyDataSetChanged();
+    private void alertMessage(final int position) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // Yes button clicked
+                        Utils.deleteFile(Api.localPath + "/" + albumModel.getArrTrack().get(position));
+                        notifyDataSetChanged();
 
-                            break;
+                        break;
 
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            // No button clicked
-                            // do nothing
-                            break;
-                    }
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // No button clicked
+                        // do nothing
+                        break;
                 }
-            };
+            }
+        };
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Bu darsni o'chirib tashlashni xohlaysizmi?")
-                    .setPositiveButton("Ha", dialogClickListener)
-                    .setNegativeButton("Yo'q", dialogClickListener).show();
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Bu darsni o'chirib tashlashni xohlaysizmi?")
+                .setPositiveButton("Ha", dialogClickListener)
+                .setNegativeButton("Yo'q", dialogClickListener).show();
+    }
 
+    private void alertDownload(final int position) {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // Yes button clicked
+                        Intent intent = new Intent(context, PlayActivity.class);
+                        intent.putExtra("category", albumModel.getCategory());
+                        intent.putExtra("url", albumModel.getCategory() + "/" + albumModel.getAlbum() + "/" + albumModel.getArrTrack().get(position));
+                        notifyDataSetChanged();
+                        context.startActivity(intent);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // No button clicked
+                        // do nothing
+                        notifyDataSetChanged();
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("Bu darsni yuklab olishni xohlaysizmi?")
+                .setPositiveButton("Albatta", dialogClickListener)
+                .setNegativeButton("Yo'q", dialogClickListener).show();
+    }
 }

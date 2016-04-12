@@ -53,8 +53,7 @@ public class PlayActivity extends AppCompatActivity  {
 
     private  SimpleImageLoader mImageLoader;
 
-    private ImageView imageView ;
-
+    private ImageView imageView;
     private int currentCategory;
     private String url, trackPath;
     private String fileName;
@@ -86,6 +85,7 @@ public class PlayActivity extends AppCompatActivity  {
                 new DownloadFileAsync().execute(url);
             } else {
                 Utils.showToast(PlayActivity.this, "INTERNET YO'Q! Yuklay olmaysiz!");
+                finish();
             }
         }
     }
@@ -130,6 +130,7 @@ public class PlayActivity extends AppCompatActivity  {
                     readExternalStoragePermission = true;
                 } else {
                     Utils.showToast(this, "Diskga yozishga ruxsat bermabsiz!");
+                    finish();
                 }
         }
     }
@@ -168,8 +169,8 @@ public class PlayActivity extends AppCompatActivity  {
         imageView = (ImageView)findViewById(R.id.iv_play);
 
         loadImage();
-
     }
+
     private void loadImage() {
 
         String imageUrl = "";
@@ -246,7 +247,7 @@ public class PlayActivity extends AppCompatActivity  {
                 input.close();
 
             } catch (Exception e) {
-                Utils.showToast(PlayActivity.this, "Error on download?");
+                Utils.showToast(PlayActivity.this, "Yuklashda xatolik bo'ldi?");
             }
             return null;
 

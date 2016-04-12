@@ -25,9 +25,8 @@ public class ExceptionViewActivity extends AppCompatActivity {
 
         TextView textView = (TextView)findViewById(R.id.tv_exception_view);
 
-        String exception =  "Uh, ah bunisini kutmagandik! Odatda, INTERNET yo'q bo'lsa yuklanmagan " +
-                "darslikni yuklamoqchi bo'lsangiz shu xatni o'qiysiz. Endi orqaga qaytishingiz mumkin. " +
-                "Biroq, internet bor bo'lib shunday bo'lgan bo'lsa bizga xabar qiling ilmnuri@ilmnuri.com. " +
+        String exception =  "Uh, ah bunisini kutmagandik! Qandaydir xatolik yuzaga keldi. " +
+                "Agarda bu xatolik doimiy ravishda yuzaga keladigan bo'lsa bizga xabar qiling ilmnuri@ilmnuri.com. " +
                 "Nosozliklar uchun oldindan uzur so'raymiz.\n\n -- Team ilmnuri";
         textView.setText(exception);
     }
