@@ -163,8 +163,13 @@ public class PlayActivity extends AppCompatActivity  {
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        TextView tvTitle = (TextView) toolbar.findViewById(R.id.tv_play_title);
-        tvTitle.setText(trackPath.replace(".mp3", "").replace("_", " "));
+        TextView tvTitle = null;
+        if (toolbar != null) {
+            tvTitle = (TextView) toolbar.findViewById(R.id.tv_play_title);
+        }
+        if (tvTitle != null) {
+            tvTitle.setText(trackPath.replace(".mp3", "").replace("_", " "));
+        }
 
         imageView = (ImageView)findViewById(R.id.iv_play);
 
@@ -279,7 +284,10 @@ public class PlayActivity extends AppCompatActivity  {
         duration = (TextView) findViewById(R.id.songDuration);
         seekbar = (SeekBar) findViewById(R.id.seekBar);
 
-        seekbar.setMax((int) finalTime);
+        if (seekbar != null) {
+            seekbar.setMax((int) finalTime);
+        }
+        assert seekbar != null;
         seekbar.setClickable(true);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -302,12 +310,14 @@ public class PlayActivity extends AppCompatActivity  {
         });
 
         ImageButton btnStart = (ImageButton) findViewById(R.id.media_play);
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                play();
-            }
-        });
+        if (btnStart != null) {
+            btnStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    play();
+                }
+            });
+        }
         if (mediaPlayer != null) {
             play();
         }

@@ -32,11 +32,15 @@ public class AlbumActivity extends AppCompatActivity {
         if(getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        assert toolbar != null;
         TextView tvTitle = (TextView)toolbar.findViewById(R.id.tv_album_title);
+
         tvTitle.setText(albumModel.getCategory() + "/" + albumModel.getAlbum());
 
         ListView listView = (ListView) findViewById(R.id.lv_album);
         AlbumAdapter albumAdapter = new AlbumAdapter(AlbumActivity.this, albumModel);
+        assert listView != null;
         listView.setAdapter(albumAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -1,6 +1,5 @@
 package com.ilmnuri.com.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,12 +39,10 @@ public class DesignDemoRecyclerAdapter extends RecyclerView.Adapter<DesignDemoRe
         viewHolder.bind(mItems.get(i), listener);
         final AlbumModel item = mItems.get(i);
         viewHolder.mTextView.setText(item.getAlbum().replace("_", " "));
-
         viewHolder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context context = view.getContext();
-
+                listener.onItemClick(item);
             }
         });
     }

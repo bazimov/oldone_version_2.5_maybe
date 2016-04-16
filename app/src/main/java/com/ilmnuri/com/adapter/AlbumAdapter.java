@@ -72,25 +72,16 @@ public class AlbumAdapter extends BaseAdapter {
               }
           });
 
-        if (Utils.checkFileExist(Api.localPath + "/" + albumModel.getArrTrack().get(position))) {
-            relativeLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, PlayActivity.class);
-                    intent.putExtra("category", albumModel.getCategory());
-                    intent.putExtra("url", albumModel.getCategory() + "/" + albumModel.getAlbum() + "/" + albumModel.getArrTrack().get(position));
-                    notifyDataSetChanged();
-                    context.startActivity(intent);
-                }
-            });
-        } else {
-            relativeLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDownload(position);
-                }
-            });
-        }
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PlayActivity.class);
+                intent.putExtra("category", albumModel.getCategory());
+                intent.putExtra("url", albumModel.getCategory() + "/" + albumModel.getAlbum() + "/" + albumModel.getArrTrack().get(position));
+                notifyDataSetChanged();
+                context.startActivity(intent);
+            }
+        });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override

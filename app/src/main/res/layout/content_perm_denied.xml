@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Menimcha telefon hotirasidan joy berilmadi. Agarda telefon diskidan joyga ruhsat bermasangiz bu app ishlamaydi. Agar adashib bosib yuborgan bo&apos;lsangiz, endi appni qaytadan o&apos;chirib yuklang. --Team ilmnuri"
+        android:text="@string/permission_denied"
         android:id="@+id/textView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

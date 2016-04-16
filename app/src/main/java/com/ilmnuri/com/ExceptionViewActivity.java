@@ -28,7 +28,9 @@ public class ExceptionViewActivity extends AppCompatActivity {
         String exception =  "Uh, ah bunisini kutmagandik! Qandaydir xatolik yuzaga keldi. " +
                 "Agarda bu xatolik doimiy ravishda yuzaga keladigan bo'lsa bizga xabar qiling ilmnuri@ilmnuri.com. " +
                 "Nosozliklar uchun oldindan uzur so'raymiz.\n\n -- Team ilmnuri";
-        textView.setText(exception);
+        if (textView != null) {
+            textView.setText(exception);
+        }
     }
 
     //required for back button

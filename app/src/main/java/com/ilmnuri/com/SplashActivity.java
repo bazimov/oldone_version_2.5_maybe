@@ -33,8 +33,6 @@ import java.util.ArrayList;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private RequestQueue mVolleyQueue;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +42,6 @@ public class SplashActivity extends AppCompatActivity {
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         getList();
-
-        if (isNetworkAvailable()) {
-            mVolleyQueue.getCache().invalidate(Api.all_category, true);
-        }
 
     }
 
@@ -60,9 +54,12 @@ public class SplashActivity extends AppCompatActivity {
 
     private void getList() {
 
-
         // Initialise Volley Request Queue.
-        mVolleyQueue = Volley.newRequestQueue(this);
+        RequestQueue mVolleyQueue = Volley.newRequestQueue(this);
+
+        if (isNetworkAvailable()) {
+            mVolleyQueue.getCache().invalidate(Api.all_category, true);
+        }
 
         JsonObjectRequest jsonObjRequest = new JsonObjectRequest(Request.Method.GET, Api.all_category, null, new Response.Listener<JSONObject>() {
             @Override
@@ -110,10 +107,10 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Utils.showToast(SplashActivity.this, "Xato! Appni qayta o'chirib yondiring.");
+                Utils.showToast(SplashActivity.this, "Xato! INTERNET yo'q va keshda ham darslik topilmadi!");
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 if( error instanceof NetworkError) {
-                    Utils.showToast(SplashActivity.this, "Tarmoqda biron bir xatolik bo'ldi!");
+                    Utils.showToast(SplashActivity.this, "Tarmoqda biron bir xatolik bo'ldi! Kesh quruq ekan, internet kerak.");
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 } else if( error instanceof ServerError) {
                     Utils.showToast(SplashActivity.this, "Ilmnuri serverlarida xato bo'ldi. Yoki bizga habar qiling ilmnuri@ilmnuri.com");
