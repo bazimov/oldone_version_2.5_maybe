@@ -16,7 +16,9 @@
 
 package com.android.volley.cache;
 
+import android.os.Build;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 
 import com.android.volley.Cache;
 import com.android.volley.VolleyLog;
@@ -339,7 +341,9 @@ public class DiskBasedCache implements Cache {
                 Callable<CacheHeader> callable = new HeaderParserCallable(file);
                 RunnableFuture<CacheHeader> submit = new ReorderingFutureTask(callable);
                 mLoadingFiles.put(file.getName(), submit);
-                executor.execute(submit);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+                    executor.execute(submit);
+                }
             }
         }
 
@@ -362,7 +366,7 @@ public class DiskBasedCache implements Cache {
             }
 
             @Override
-            public int compareTo(ReorderingFutureTask another) {
+            public int compareTo(@NonNull ReorderingFutureTask another) {
                 return  mGetRequests > another.mGetRequests ? - 1 : mGetRequests < another.mGetRequests ? + 1 : 0;
             }
         }
@@ -386,9 +390,7 @@ public class DiskBasedCache implements Cache {
                     mTotalSize.getAndAdd(entry.size);
                     return entry;
                 } catch (IOException e) {
-                    if (file != null) {
-                        file.delete();
-                    }
+                    file.delete();
                 } finally {
                     try {
                         if (fis != null) {
@@ -410,8 +412,7 @@ public class DiskBasedCache implements Cache {
                     Map.Entry<String, Future<CacheHeader>> entry = iterator.next();
                     try {
                         entry.getValue().get();
-                    } catch (InterruptedException ignored) {
-                    } catch (ExecutionException ignored) {
+                    } catch (InterruptedException | ExecutionException ignored) {
                     }
                 }
             }
@@ -427,8 +428,7 @@ public class DiskBasedCache implements Cache {
             if (future != null) {
                 try {
                     future.get();
-                } catch (InterruptedException ignored) {
-                } catch (ExecutionException ignored) {
+                } catch (InterruptedException | ExecutionException ignored) {
                 }
             }
         }

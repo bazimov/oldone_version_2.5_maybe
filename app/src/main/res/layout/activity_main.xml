@@ -60,6 +60,23 @@
             <!--android:src="@drawable/ic_done"/>-->
 
     </android.support.design.widget.CoordinatorLayout>
+    <FrameLayout
+        android:id="@id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start">
+
+        <ListView
+            android:id="@+id/left_drawer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:choiceMode="singleChoice"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            android:background="#111"/>
+
+        <!-- Add your Drawer layout content here -->
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
@@ -68,4 +85,7 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer"/>
+
+    </FrameLayout>
+
 </android.support.v4.widget.DrawerLayout>

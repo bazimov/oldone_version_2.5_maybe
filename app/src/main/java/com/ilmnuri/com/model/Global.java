@@ -8,10 +8,6 @@ public class Global {
     private static Global instance;
     ArrayList<AlbumModel> arrayList;
 
-    public ArrayList<AlbumModel> getArrayList() {
-        return arrayList;
-    }
-
     public void setArrayList(ArrayList<AlbumModel> arrayList) {
         this.arrayList = arrayList;
     }

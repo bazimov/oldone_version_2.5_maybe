@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
         RequestQueue mVolleyQueue = Volley.newRequestQueue(this);
 
         if (isNetworkAvailable()) {
-            mVolleyQueue.getCache().invalidate(Api.all_category, true);
+            mVolleyQueue.getCache().clear();
         }
 
         JsonObjectRequest jsonObjRequest = new JsonObjectRequest(Request.Method.GET, Api.all_category, null, new Response.Listener<JSONObject>() {

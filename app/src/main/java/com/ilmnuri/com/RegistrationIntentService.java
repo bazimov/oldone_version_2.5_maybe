@@ -6,19 +6,20 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.apache.commons.io.IOUtils;
-import java.io.InputStream;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class RegistrationIntentService extends IntentService {
@@ -86,7 +87,7 @@ public class RegistrationIntentService extends IntentService {
         }
         try {
             // Create connection to send GCM Message request.
-            URL url = new URL("http://api.azimov.xyz/tokens/success");
+            URL url = new URL("http://api.ilmnuri.net/tokens/success");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestMethod("POST");

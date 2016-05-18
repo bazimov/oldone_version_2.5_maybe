@@ -71,8 +71,13 @@ public class PlayActivity extends AppCompatActivity  {
 
         File direct = new File(Api.localPath);
 
-        if (!direct.exists()) {
-            direct.mkdirs();
+        boolean isDirectoryCreated=direct.exists();
+        if (!isDirectoryCreated) {
+            isDirectoryCreated= direct.mkdirs();
+        }
+        if(isDirectoryCreated) {
+            // do something
+            Log.d("mkdirs option", "Directory already exists.");
         }
 
         if (Utils.checkFileExist(Api.localPath + "/" + fileName)) {
@@ -232,7 +237,7 @@ public class PlayActivity extends AppCompatActivity  {
                 connexion.connect();
 
                 int lenghtOfFile = connexion.getContentLength();
-                Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
+                // Log.d("ANDRO_ASYNC", "Lenght of file: " + lenghtOfFile);
 
                 InputStream input = new BufferedInputStream(url.openStream());
                 OutputStream output = new FileOutputStream(Api.localPath + "/" + fileName);
@@ -265,6 +270,7 @@ public class PlayActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(String unused) {
             dismissDialog(DIALOG_DOWNLOAD_PROGRESS);
+            Utils.showToast(PlayActivity.this, "Darslik yuklandi, endi ijro etilmoqda");
             if (readExternalStoragePermission) {
                 initMediaPlayer();
             }
@@ -309,7 +315,9 @@ public class PlayActivity extends AppCompatActivity  {
             }
         });
 
+        boolean isPlaying = false;
         ImageButton btnStart = (ImageButton) findViewById(R.id.media_play);
+
         if (btnStart != null) {
             btnStart.setOnClickListener(new View.OnClickListener() {
                 @Override

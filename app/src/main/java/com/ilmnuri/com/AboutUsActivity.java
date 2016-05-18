@@ -39,7 +39,7 @@ public class AboutUsActivity extends AppCompatActivity {
                     "Texnik nosozliklar haqida bizga xabar qiling.\n\n" +
                     "Telegramda: http://telegram.me/ilmnuri_apps\n" +
                     "e-mail: ilmnuri@ilmnuri.com\n\n" +
-                    "--Team ilmnuri\nwww.ilmnuri.com";
+                    "--Team ilmnuri\nwww.ilmnuri.com\n\n2.7 versiya\nMay 8, 2016";
             tvAboutUs.setText(aboutUs);
         } catch (Exception e) {
             e.printStackTrace();

@@ -90,6 +90,12 @@
         <service
             android:name=".RegistrationIntentService"
             android:exported="false" />
+
+        <activity
+            android:name=".WebView"
+            android:label="@string/title_activity_web_view"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".WebViewActivity" />
     </application>
 
 </manifest>

@@ -5,16 +5,9 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -23,20 +16,7 @@ import android.widget.Toast;
 
 import com.ilmnuri.com.R;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class Utils {
@@ -55,31 +35,15 @@ public class Utils {
         if(file.exists()){
             file.delete();
             return true;
-        }else
+        } else {
             return false;
+        }
     }
+
     public static void garbageCollect() {
         System.runFinalization();
         Runtime.getRuntime().gc();
         System.gc();
-    }
-
-    public static boolean haveNetworkConnection(Context activity) {
-        ConnectivityManager connectivity = (ConnectivityManager) activity
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity == null) {
-            return false;
-        } else {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null) {
-                for (NetworkInfo anInfo : info) {
-                    if (anInfo.getState() == NetworkInfo.State.CONNECTED) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
     }
 
 
@@ -131,24 +95,6 @@ public class Utils {
 
         return mDialog;
     }
-    public static synchronized void hideProgress () {
-        if (mProgressDialog != null)
-        {
-            try
-            {
-                mProgressDialog.dismiss();
-            }
-            catch (Exception ex)
-            {
-                // empty
-            }
-            finally
-            {
-                mProgressDialog = null;
-            }
-
-        }
-    }
 
     public static void showProgress(Context mContext) {
         if (mProgressDialog != null && mProgressDialog.isShowing())
@@ -181,138 +127,6 @@ public class Utils {
 
 
         edit.apply();
-    }
-    public static String getFromPreference(Context context, String key) {
-        return getSharedPreferences(context).getString(key, "");
-    }
-
-    public static void sendEmail(Context mContext, String toAddress) {
-        Intent email = new Intent(Intent.ACTION_SEND);
-        email.putExtra(Intent.EXTRA_EMAIL, new String[] { toAddress });
-        email.putExtra(Intent.EXTRA_SUBJECT, "Perceptual Yoga");
-        email.putExtra(
-                Intent.EXTRA_TEXT,
-                "Namaste\n\nKeep track of your Yoga activity such as Practice, Teaching and Learning, browse our members database, share your achievements and more. \nDownload Perpetual Yoga \n Find it at your App Store and Google Play \n https://play.google.com/store?hl=en&tab=i8");
-        email.setType("message/rfc822");
-        mContext.startActivity(Intent.createChooser(email,
-                "Choose an Email client :"));
-    }
-
-    public static void call(Context mContext, String phone) {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + phone));
-//        mContext.startActivity(callIntent);
-    }
-
-    public static void CopyStream(InputStream is, OutputStream os) {
-        final int buffer_size = 1024;
-        try {
-            byte[] bytes = new byte[buffer_size];
-            for (;;) {
-                int count = is.read(bytes, 0, buffer_size);
-                if (count == -1)
-                    break;
-                os.write(bytes, 0, count);
-            }
-        } catch (Exception ex) {
-        }
-    }
-
-
-
-
-
-
-
-    public static JSONObject getJSONGetPractitionerRecords(String contactNo) {
-        HashMap<String, Object> outerMap = new HashMap<>();
-        HashMap<String, String> innerMap = new HashMap<>();
-
-        innerMap.put("contactNo", contactNo);
-        outerMap.put("practitionerDetails", new JSONObject(innerMap));
-
-        return new JSONObject(outerMap);
-    }
-
-    public static String convertStreamToString(InputStream is)
-            throws IOException {
-        Writer writer = new StringWriter();
-        char[] buffer = new char[2048];
-        try {
-            Reader reader = new BufferedReader(new InputStreamReader(is,
-                    "UTF-8"));
-            int n;
-            while ((n = reader.read(buffer)) != -1) {
-                writer.write(buffer, 0, n);
-            }
-        } finally {
-            is.close();
-        }
-        return writer.toString();
-    }
-
-    public static String getSimCountryIso(Context ctx) {
-        TelephonyManager tm = (TelephonyManager) ctx
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        return tm.getSimCountryIso().toUpperCase();
-    }
-
-    public static String getNetworkCountryIso(Context ctx) {
-        TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
-        return tm.getNetworkCountryIso().toUpperCase();
-    }
-
-    public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
-        return !TextUtils.isEmpty(phoneNumber) && Patterns.PHONE.matcher(phoneNumber).matches();
-    }
-
-
-    public static boolean isEmailValid(String email) {
-        boolean isValid = false;
-
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()) {
-            isValid = true;
-        }
-        return isValid;
-    }
-    ///send email
-    private void sendEmail(Context mContext, String[] recipients, String subject){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        //            String[] recipients = {"fafuserservices@gmail.com"};
-        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_CC, getDeviceName());
-        intent.setType("message/rfc822");
-        mContext.startActivity(Intent.createChooser(intent, "Send mail"));
-
-    }
-
-    //sharing
-    private void sharing(Context context, String shareBody){
-//        String shareBody = "Fix-A-Friend is a great photo & video sharing and editing app." +
-//                "Please download from Google Play Store and enjoy!" +
-//                " https://play.google.com/store/apps/details?id=************************";
-
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Safar");
-
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-        context.startActivity(Intent.createChooser(sharingIntent, "Share via"));
-
-    }
-    /** Returns the consumer friendly device name */
-    public static String getDeviceName() {
-        String manufacturer = Build.MANUFACTURER;
-        String model = Build.MODEL;
-        if (model.startsWith(manufacturer)) {
-            return capitalize(model);
-        }
-        return capitalize(manufacturer) + " " + model;
     }
 
     public static String capitalize(String str) {

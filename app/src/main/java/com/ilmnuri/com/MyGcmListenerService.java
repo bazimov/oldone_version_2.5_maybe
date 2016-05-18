@@ -49,6 +49,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 .setLargeIcon(image)
                 .setContentTitle("ilmnuri")
                 .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

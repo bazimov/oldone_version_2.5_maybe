@@ -99,6 +99,7 @@ public class AlbumAdapter extends BaseAdapter {
                     case DialogInterface.BUTTON_POSITIVE:
                         // Yes button clicked
                         Utils.deleteFile(Api.localPath + "/" + albumModel.getArrTrack().get(position));
+                        Utils.showToast(context, "Darslik o'chirib tashlandi!");
                         notifyDataSetChanged();
 
                         break;

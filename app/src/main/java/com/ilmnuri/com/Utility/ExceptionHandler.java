@@ -2,7 +2,6 @@ package com.ilmnuri.com.Utility;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 
 import com.ilmnuri.com.ExceptionViewActivity;
 
@@ -22,8 +21,7 @@ public class ExceptionHandler implements
         exception.printStackTrace(new PrintWriter(stackTrace));
 
         Intent intent = new Intent(myContext, ExceptionViewActivity.class);
-        String LINE_SEPARATOR = "\n";
-        intent.putExtra("error", "************ CAUSE OF ERROR ************\n\n" + stackTrace.toString() + "\n************ DEVICE INFORMATION ***********\n" + "Brand: " + Build.BRAND + LINE_SEPARATOR + "Device: " + Build.DEVICE + LINE_SEPARATOR + "Model: " + Build.MODEL + LINE_SEPARATOR + "Id: " + Build.ID + LINE_SEPARATOR + "Product: " + Build.PRODUCT + LINE_SEPARATOR + "\n************ FIRMWARE ************\n" + LINE_SEPARATOR + "Release: " + Build.VERSION.RELEASE + LINE_SEPARATOR + "Incremental: " + Build.VERSION.INCREMENTAL + LINE_SEPARATOR);
+        intent.putExtra("error", "Kutilmagan xato yuzaga keldi. ilmnuri@ilmnuri.com ga email yozing.\n\n");
         myContext.startActivity(intent);
 
         android.os.Process.killProcess(android.os.Process.myPid());
